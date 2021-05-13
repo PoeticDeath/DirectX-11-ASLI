@@ -18,7 +18,7 @@
 *	along with The Chili Direct3D Engine.  If not, see <http://www.gnu.org/licenses/>.    *
 ******************************************************************************************/
 #include "App.h"
-UINT i = 2;
+UINT i = 1;
 
 int CALLBACK WinMain(
 	HINSTANCE hInstance,

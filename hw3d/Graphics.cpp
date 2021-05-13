@@ -46,7 +46,7 @@ Graphics::Graphics( HWND hWnd, UINT i)
 	if (i == 1)
 	{
 		GFX_THROW_INFO(D3D11CreateDeviceAndSwapChain(
-			adapters[0].pAdapter,
+			adapters[1].pAdapter,
 			D3D_DRIVER_TYPE_UNKNOWN,
 			nullptr,
 			swapCreateFlags,
@@ -63,7 +63,7 @@ Graphics::Graphics( HWND hWnd, UINT i)
 	if (i == 2)
 	{
 		GFX_THROW_INFO(D3D11CreateDeviceAndSwapChain(
-			adapters[1].pAdapter,
+			adapters[0].pAdapter,
 			D3D_DRIVER_TYPE_UNKNOWN,
 			nullptr,
 			swapCreateFlags,
