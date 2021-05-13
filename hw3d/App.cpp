@@ -73,10 +73,8 @@ App::App()
 		std::uniform_int_distribution<int> typedist{ 0,4 };
 	};
 
-	drawables1.reserve( nDrawables );
-	std::generate_n( std::back_inserter( drawables1 ),nDrawables,Factory{ wnd.Gfx( 2,true,true ) } );
-	drawables2.reserve( nDrawables );
-	std::generate_n( std::back_inserter( drawables2 ),nDrawables,Factory{ wnd.Gfx( 1,true,true ) } );
+	drawables.reserve( nDrawables );
+	std::generate_n( std::back_inserter( drawables ),nDrawables,Factory{ wnd.Gfx( 1,true,true ) } );
 
 	wnd.Gfx( 1,true,true ).SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 	wnd.Gfx( 2,true,true ).SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
@@ -117,7 +115,7 @@ void App::DoFrame(INT i)
 	{
 		if ( i == 2 )
 		{
-			for (auto& d : drawables1)
+			for (auto& d : drawables)
 			{
 				d->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 				d->Draw(wnd.Gfx(i, GPU1, GPU2));
@@ -128,7 +126,7 @@ void App::DoFrame(INT i)
 	{
 		if ( i == 1 )
 		{
-			for (auto& d : drawables2)
+			for (auto& d : drawables)
 			{
 				d->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 				d->Draw(wnd.Gfx(i, GPU1, GPU2));

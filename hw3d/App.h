@@ -19,8 +19,7 @@ private:
 	ImguiManager imgui;
 	Window wnd;
 	ChiliTimer timer;
-	std::vector<std::unique_ptr<class Drawable>> drawables1;
-	std::vector<std::unique_ptr<class Drawable>> drawables2;
+	std::vector<std::unique_ptr<class Drawable>> drawables;
 	float speed_factor = 1.0f;
 	Camera cam;
 	static constexpr size_t nDrawables = 1280;
