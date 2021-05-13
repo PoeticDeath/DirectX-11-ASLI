@@ -17,7 +17,7 @@ GDIPlusManager gdipm;
 
 App::App()
 	:
-	wnd( 800,600,"ASLI GPU Rendering" )
+	wnd( 1920,1080,"ASLI GPU Rendering" )
 {
 	class Factory
 	{
@@ -134,6 +134,14 @@ void App::DoFrame(INT i)
 				d->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 				d->Draw(wnd.Gfx(i, GPU1, GPU2));
 			}
+		}
+	}
+
+	if ( !GPU1 )
+	{
+		if ( !GPU2 )
+		{
+			std::exit(EXIT_SUCCESS);
 		}
 	}
 
