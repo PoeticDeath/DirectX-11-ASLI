@@ -105,9 +105,12 @@ void App::DoFrame(INT i)
 		}
 		else
 		{
-			i = 2;
-			wnd.Gfx(i, GPU1, GPU2).BeginFrame(0.07f, 0.0f, 0.12f);
-			wnd.Gfx(i, GPU1, GPU2).SetCamera(cam.GetMatrix());
+			if ( GPU2 )
+			{
+				i = 2;
+				wnd.Gfx(i, GPU1, GPU2).BeginFrame(0.07f, 0.0f, 0.12f);
+				wnd.Gfx(i, GPU1, GPU2).SetCamera(cam.GetMatrix());
+			}
 		}
 	}
 
