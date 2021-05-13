@@ -142,7 +142,7 @@ std::optional<int> Window::ProcessMessages() noexcept
 	return {};
 }
 
-Graphics& Window::Gfx( UINT i )
+Graphics& Window::Gfx( INT i )
 {
 	if( !pGfx )
 	{

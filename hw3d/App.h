@@ -7,17 +7,18 @@
 class App
 {
 public:
-	App(UINT i);
+	App(INT i);
 	// master frame / message loop
-	int Go(UINT i);
+	int Go(INT i);
 	~App();
 private:
-	void DoFrame( UINT i );
+	void DoFrame( INT i );
 private:
 	ImguiManager imgui;
 	Window wnd;
 	ChiliTimer timer;
-	std::vector<std::unique_ptr<class Drawable>> drawables;
+	std::vector<std::unique_ptr<class Drawable>> drawables1;
+	std::vector<std::unique_ptr<class Drawable>> drawables2;
 	float speed_factor = 1.0f;
 	Camera cam;
 	static constexpr size_t nDrawables = 1280;

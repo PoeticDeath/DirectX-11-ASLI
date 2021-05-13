@@ -15,7 +15,7 @@ namespace dx = DirectX;
 
 GDIPlusManager gdipm;
 
-App::App(UINT i)
+App::App(INT i)
 	:
 	wnd( 800,600,"ASLI GPU Rendering" )
 {
@@ -73,19 +73,22 @@ App::App(UINT i)
 		std::uniform_int_distribution<int> typedist{ 0,4 };
 	};
 
-	drawables.reserve( nDrawables );
-	std::generate_n( std::back_inserter( drawables ),nDrawables,Factory{ wnd.Gfx(i) } );
+	drawables1.reserve( nDrawables );
+	std::generate_n( std::back_inserter( drawables1 ),nDrawables,Factory{ wnd.Gfx( 2 ) } );
+	drawables2.reserve( nDrawables );
+	std::generate_n( std::back_inserter( drawables2 ),nDrawables,Factory{ wnd.Gfx( 1 ) } );
 
-	wnd.Gfx(i).SetProjection( dx::XMMatrixPerspectiveLH( 1.0f,3.0f / 4.0f,0.5f,40.0f ) );
+	wnd.Gfx( 2 ).SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+	wnd.Gfx( 1 ).SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 }
 
-void App::DoFrame( UINT i )
+void App::DoFrame( INT i )
 {
 	const auto dt = timer.Mark() * speed_factor;
 	wnd.Gfx( i ).BeginFrame( 0.07f,0.0f,0.12f );
 	wnd.Gfx( i ).SetCamera( cam.GetMatrix() );
 
-	for( auto& d : drawables )
+	for( auto& d : drawables1 )
 	{
 		d->Update( wnd.kbd.KeyIsPressed( VK_SPACE ) ? 0.0f : dt );
 		d->Draw( wnd.Gfx( i ) );
@@ -104,13 +107,37 @@ void App::DoFrame( UINT i )
 
 	// present
 	wnd.Gfx( i ).EndFrame();
+
+	i = 1;
+	wnd.Gfx( i ).BeginFrame( 0.07f,0.0f,0.12f );
+	wnd.Gfx( i ).SetCamera( cam.GetMatrix() );
+
+	for ( auto& d : drawables2 )
+	{
+		d->Update( wnd.kbd.KeyIsPressed( VK_SPACE ) ? 0.0f : dt );
+		d->Draw( wnd.Gfx(i) );
+	}
+
+	// imgui window to control simulation speed
+	if (ImGui::Begin( "Simulation Speed" ))
+	{
+		ImGui::SliderFloat( "Speed Factor",&speed_factor,0.0f,4.0f );
+		ImGui::Text( "%.3f ms/frame (%.1f FPS)",1000.0f / ImGui::GetIO().Framerate,ImGui::GetIO().Framerate );
+		ImGui::Text( "Status: %s",wnd.kbd.KeyIsPressed(VK_SPACE) ? "PAUSED" : "RUNNING (hold spacebar to pause)" );
+	}
+	ImGui::End();
+	// imgui window to control camera
+	cam.SpawnControlWindow();
+
+	// present
+	wnd.Gfx( i ).EndFrame();
 }
 
 App::~App()
 {}
 
 
-int App::Go(UINT i)
+int App::Go(INT i)
 {
 	while( true )
 	{

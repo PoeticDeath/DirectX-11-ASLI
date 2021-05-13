@@ -18,7 +18,7 @@
 *	along with The Chili Direct3D Engine.  If not, see <http://www.gnu.org/licenses/>.    *
 ******************************************************************************************/
 #include "App.h"
-UINT i = 1;
+INT i = 2;
 
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
@@ -28,14 +28,6 @@ int CALLBACK WinMain(
 {
 	try
 	{
-		if (i == 2)
-		{
-			i = 1;
-		}
-		else
-		{
-			i = 2;
-		}
 		return App{i}.Go(i);
 	}
 	catch( const ChiliException& e )

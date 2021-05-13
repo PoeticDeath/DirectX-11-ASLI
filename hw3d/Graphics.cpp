@@ -14,7 +14,7 @@ namespace dx = DirectX;
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"D3DCompiler.lib")
 
-Graphics::Graphics( HWND hWnd, UINT i)
+Graphics::Graphics( HWND hWnd, INT i)
 {
 	DXGI_SWAP_CHAIN_DESC sd = {};
 	sd.BufferDesc.Width = 0;
@@ -151,7 +151,7 @@ void Graphics::EndFrame()
 	{
 		if( hr == DXGI_ERROR_DEVICE_REMOVED )
 		{
-			throw GFX_DEVICE_REMOVED_EXCEPT( pDevice->GetDeviceRemovedReason() );
+			//throw GFX_DEVICE_REMOVED_EXCEPT( pDevice->GetDeviceRemovedReason() );
 		}
 		else
 		{

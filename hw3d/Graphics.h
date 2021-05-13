@@ -52,7 +52,7 @@ public:
 		std::string reason;
 	};
 public:
-	Graphics( HWND hWnd, UINT i );
+	Graphics( HWND hWnd, INT i );
 	Graphics( const Graphics& ) = delete;
 	Graphics& operator=( const Graphics& ) = delete;
 	~Graphics() = default;
