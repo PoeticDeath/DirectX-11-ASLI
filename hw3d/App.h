@@ -7,12 +7,14 @@
 class App
 {
 public:
-	App(INT i);
+	App();
 	// master frame / message loop
-	int Go(INT i);
+	int Go();
 	~App();
 private:
-	void DoFrame( INT i );
+	bool GPU1 = true;
+	bool GPU2 = true;
+	void DoFrame(INT i);
 private:
 	ImguiManager imgui;
 	Window wnd;

@@ -15,7 +15,7 @@ namespace dx = DirectX;
 
 GDIPlusManager gdipm;
 
-App::App(INT i)
+App::App()
 	:
 	wnd( 800,600,"ASLI GPU Rendering" )
 {
@@ -74,30 +74,74 @@ App::App(INT i)
 	};
 
 	drawables1.reserve( nDrawables );
-	std::generate_n( std::back_inserter( drawables1 ),nDrawables,Factory{ wnd.Gfx( 2 ) } );
+	std::generate_n( std::back_inserter( drawables1 ),nDrawables,Factory{ wnd.Gfx( 2,true,true ) } );
 	drawables2.reserve( nDrawables );
-	std::generate_n( std::back_inserter( drawables2 ),nDrawables,Factory{ wnd.Gfx( 1 ) } );
+	std::generate_n( std::back_inserter( drawables2 ),nDrawables,Factory{ wnd.Gfx( 1,true,true ) } );
 
-	wnd.Gfx( 2 ).SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
-	wnd.Gfx( 1 ).SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+	wnd.Gfx( 1,true,true ).SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+	wnd.Gfx( 2,true,true ).SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 }
 
-void App::DoFrame( INT i )
+void App::DoFrame(INT i)
 {
 	const auto dt = timer.Mark() * speed_factor;
-	wnd.Gfx( i ).BeginFrame( 0.07f,0.0f,0.12f );
-	wnd.Gfx( i ).SetCamera( cam.GetMatrix() );
 
-	for( auto& d : drawables1 )
+	if ( i == 2 )
 	{
-		d->Update( wnd.kbd.KeyIsPressed( VK_SPACE ) ? 0.0f : dt );
-		d->Draw( wnd.Gfx( i ) );
+		if ( GPU2 )
+		{
+			wnd.Gfx(i, GPU1, GPU2).BeginFrame(0.07f, 0.0f, 0.12f);
+			wnd.Gfx(i, GPU1, GPU2).SetCamera(cam.GetMatrix());
+		}
+		else
+		{
+			i = 1;
+		}
+	}
+	if (i == 1)
+	{
+		if ( GPU1 )
+		{
+			wnd.Gfx(i, GPU1, GPU2).BeginFrame(0.07f, 0.0f, 0.12f);
+			wnd.Gfx(i, GPU1, GPU2).SetCamera(cam.GetMatrix());
+		}
+		else
+		{
+			i = 2;
+			wnd.Gfx(i, GPU1, GPU2).BeginFrame(0.07f, 0.0f, 0.12f);
+			wnd.Gfx(i, GPU1, GPU2).SetCamera(cam.GetMatrix());
+		}
+	}
+
+	if ( GPU2 )
+	{
+		if ( i == 2 )
+		{
+			for (auto& d : drawables1)
+			{
+				d->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
+				d->Draw(wnd.Gfx(i, GPU1, GPU2));
+			}
+		}
+	}
+	if ( GPU1 )
+	{
+		if ( i == 1 )
+		{
+			for (auto& d : drawables2)
+			{
+				d->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
+				d->Draw(wnd.Gfx(i, GPU1, GPU2));
+			}
+		}
 	}
 
 	// imgui window to control simulation speed
 	if( ImGui::Begin( "Simulation Speed" ) )
 	{
 		ImGui::SliderFloat( "Speed Factor",&speed_factor,0.0f,4.0f );
+		ImGui::Checkbox( "GPU1",&GPU1 );
+		ImGui::Checkbox( "GPU2",&GPU2 );
 		ImGui::Text( "%.3f ms/frame (%.1f FPS)",1000.0f / ImGui::GetIO().Framerate,ImGui::GetIO().Framerate );
 		ImGui::Text( "Status: %s",wnd.kbd.KeyIsPressed( VK_SPACE ) ? "PAUSED" : "RUNNING (hold spacebar to pause)" );
 	}
@@ -106,39 +150,16 @@ void App::DoFrame( INT i )
 	cam.SpawnControlWindow();
 
 	// present
-	wnd.Gfx( i ).EndFrame();
-
-	i = 1;
-	wnd.Gfx( i ).BeginFrame( 0.07f,0.0f,0.12f );
-	wnd.Gfx( i ).SetCamera( cam.GetMatrix() );
-
-	for ( auto& d : drawables2 )
-	{
-		d->Update( wnd.kbd.KeyIsPressed( VK_SPACE ) ? 0.0f : dt );
-		d->Draw( wnd.Gfx(i) );
-	}
-
-	// imgui window to control simulation speed
-	if (ImGui::Begin( "Simulation Speed" ))
-	{
-		ImGui::SliderFloat( "Speed Factor",&speed_factor,0.0f,4.0f );
-		ImGui::Text( "%.3f ms/frame (%.1f FPS)",1000.0f / ImGui::GetIO().Framerate,ImGui::GetIO().Framerate );
-		ImGui::Text( "Status: %s",wnd.kbd.KeyIsPressed(VK_SPACE) ? "PAUSED" : "RUNNING (hold spacebar to pause)" );
-	}
-	ImGui::End();
-	// imgui window to control camera
-	cam.SpawnControlWindow();
-
-	// present
-	wnd.Gfx( i ).EndFrame();
+	wnd.Gfx(i, GPU1, GPU2).EndFrame();
 }
 
 App::~App()
 {}
 
 
-int App::Go(INT i)
+int App::Go()
 {
+	INT i = 1;
 	while( true )
 	{
 		// process all messages pending, but to not block for new messages
@@ -146,6 +167,14 @@ int App::Go(INT i)
 		{
 			// if return optional has value, means we're quitting so return exit code
 			return *ecode;
+		}
+		if ( i == 1 )
+		{
+			i = 2;
+		}
+		else
+		{
+			i = 1;
 		}
 		DoFrame( i );
 	}

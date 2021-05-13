@@ -103,7 +103,7 @@ Window::Window( int width,int height,const char* name )
 	ImGui_ImplWin32_Init( hWnd );
 	// create graphics object
 	pGfx = std::make_unique<Graphics>( hWnd, 1 );
-	sGfx = std::make_unique<Graphics>( hWnd, 2 );
+	//sGfx = std::make_unique<Graphics>( hWnd, 2 );
 }
 
 Window::~Window()
@@ -142,20 +142,13 @@ std::optional<int> Window::ProcessMessages() noexcept
 	return {};
 }
 
-Graphics& Window::Gfx( INT i )
+Graphics& Window::Gfx(INT i, bool GPU1, bool GPU2 )
 {
-	if( !pGfx )
+	if ( !pGfx )
 	{
 		throw CHWND_NOGFX_EXCEPT();
 	}
-	if (i == 1)
-	{
-		return *pGfx;
-	};
-	if (i == 2)
-	{
-		return *sGfx;
-	};
+	return *pGfx;
 }
 
 LRESULT CALLBACK Window::HandleMsgSetup( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam ) noexcept

@@ -76,7 +76,7 @@ public:
 	Window& operator=( const Window& ) = delete;
 	void SetTitle( const std::string& title );
 	static std::optional<int> ProcessMessages() noexcept;
-	Graphics& Gfx( INT i );
+	Graphics& Gfx(INT i, bool GPU1, bool GPU2 );
 private:
 	static LRESULT CALLBACK HandleMsgSetup( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam ) noexcept;
 	static LRESULT CALLBACK HandleMsgThunk( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam ) noexcept;
@@ -89,5 +89,4 @@ private:
 	int height;
 	HWND hWnd;
 	std::unique_ptr<Graphics> pGfx;
-	std::unique_ptr<Graphics> sGfx;
 };

@@ -27,7 +27,7 @@ Graphics::Graphics( HWND hWnd, INT i)
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	sd.BufferCount = 2;
+	sd.BufferCount = 1;
 	sd.OutputWindow = hWnd;
 	sd.Windowed = TRUE;
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
@@ -134,7 +134,7 @@ Graphics::Graphics( HWND hWnd, INT i)
 	ImGui_ImplDX11_Init( pDevice.Get(),pContext.Get() );
 }
 
-void Graphics::EndFrame()
+void Graphics::EndFrame() noexcept(!IS_DEBUG)
 {
 	// imgui frame end
 	if( imguiEnabled )
@@ -151,7 +151,7 @@ void Graphics::EndFrame()
 	{
 		if( hr == DXGI_ERROR_DEVICE_REMOVED )
 		{
-			//throw GFX_DEVICE_REMOVED_EXCEPT( pDevice->GetDeviceRemovedReason() );
+			throw GFX_DEVICE_REMOVED_EXCEPT( pDevice->GetDeviceRemovedReason() );
 		}
 		else
 		{
