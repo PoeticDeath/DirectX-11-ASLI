@@ -17,5 +17,5 @@ float ChiliTimer::Mark() noexcept
 
 float ChiliTimer::Peek() const noexcept
 {
-	return duration<float>( steady_clock::now() - last ).count();
+	return duration<float>(steady_clock::now() - last).count();
 }

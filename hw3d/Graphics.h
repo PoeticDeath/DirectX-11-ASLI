@@ -22,7 +22,7 @@ public:
 	class HrException : public Exception
 	{
 	public:
-		HrException( int line,const char* file,HRESULT hr,std::vector<std::string> infoMsgs = {} ) noexcept;
+		HrException(int line, const char* file, HRESULT hr, std::vector<std::string> infoMsgs = {}) noexcept;
 		const char* what() const noexcept override;
 		const char* GetType() const noexcept override;
 		HRESULT GetErrorCode() const noexcept;
@@ -36,7 +36,7 @@ public:
 	class InfoException : public Exception
 	{
 	public:
-		InfoException( int line,const char* file,std::vector<std::string> infoMsgs ) noexcept;
+		InfoException(int line, const char* file, std::vector<std::string> infoMsgs) noexcept;
 		const char* what() const noexcept override;
 		const char* GetType() const noexcept override;
 		std::string GetErrorInfo() const noexcept;
@@ -52,16 +52,16 @@ public:
 		std::string reason;
 	};
 public:
-	Graphics( HWND hWnd, INT i );
-	Graphics( const Graphics& ) = delete;
-	Graphics& operator=( const Graphics& ) = delete;
+	Graphics(HWND hWnd, INT i);
+	Graphics(const Graphics&) = delete;
+	Graphics& operator=(const Graphics&) = delete;
 	~Graphics() = default;
 	void EndFrame() noexcept(!IS_DEBUG);
-	void BeginFrame( float red,float green,float blue ) noexcept;
-	void DrawIndexed( UINT count ) noexcept(!IS_DEBUG);
-	void SetProjection( DirectX::FXMMATRIX proj ) noexcept;
+	void BeginFrame(float red, float green, float blue) noexcept;
+	void DrawIndexed(UINT count) noexcept(!IS_DEBUG);
+	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
-	void SetCamera( DirectX::FXMMATRIX cam ) noexcept;
+	void SetCamera(DirectX::FXMMATRIX cam) noexcept;
 	DirectX::XMMATRIX GetCamera() const noexcept;
 	void EnableImgui() noexcept;
 	void DisableImgui() noexcept;

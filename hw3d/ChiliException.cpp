@@ -21,10 +21,10 @@
 #include <sstream>
 
 
-ChiliException::ChiliException( int line,const char* file ) noexcept
+ChiliException::ChiliException(int line, const char* file) noexcept
 	:
-	line( line ),
-	file( file )
+	line(line),
+	file(file)
 {}
 
 const char* ChiliException::what() const noexcept

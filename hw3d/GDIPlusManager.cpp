@@ -34,20 +34,20 @@ int GDIPlusManager::refCount = 0;
 
 GDIPlusManager::GDIPlusManager()
 {
-	if( refCount++ == 0 )
+	if (refCount++ == 0)
 	{
 		Gdiplus::GdiplusStartupInput input;
 		input.GdiplusVersion = 1;
 		input.DebugEventCallback = nullptr;
 		input.SuppressBackgroundThread = false;
-		Gdiplus::GdiplusStartup( &token,&input,nullptr );
+		Gdiplus::GdiplusStartup(&token, &input, nullptr);
 	}
 }
 
 GDIPlusManager::~GDIPlusManager()
 {
-	if( --refCount == 0 )
+	if (--refCount == 0)
 	{
-		Gdiplus::GdiplusShutdown( token );
+		Gdiplus::GdiplusShutdown(token);
 	}
 }

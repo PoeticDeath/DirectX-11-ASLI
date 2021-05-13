@@ -1,5 +1,5 @@
-/****************************************************************************************** 
- *	Chili DirectX Framework Version 16.07.20											  *	
+/******************************************************************************************
+ *	Chili DirectX Framework Version 16.07.20											  *
  *	Mouse.h																				  *
  *	Copyright 2016 PlanetChili <http://www.planetchili.net>								  *
  *																						  *
@@ -48,19 +48,19 @@ public:
 		int x;
 		int y;
 	public:
-		Event( Type type,const Mouse& parent ) noexcept
+		Event(Type type, const Mouse& parent) noexcept
 			:
-			type( type ),
-			leftIsPressed( parent.leftIsPressed ),
-			rightIsPressed( parent.rightIsPressed ),
-			x( parent.x ),
-			y( parent.y )
+			type(type),
+			leftIsPressed(parent.leftIsPressed),
+			rightIsPressed(parent.rightIsPressed),
+			x(parent.x),
+			y(parent.y)
 		{}
 		Type GetType() const noexcept
 		{
 			return type;
 		}
-		std::pair<int,int> GetPos() const noexcept
+		std::pair<int, int> GetPos() const noexcept
 		{
 			return{ x,y };
 		}
@@ -83,9 +83,9 @@ public:
 	};
 public:
 	Mouse() = default;
-	Mouse( const Mouse& ) = delete;
-	Mouse& operator=( const Mouse& ) = delete;
-	std::pair<int,int> GetPos() const noexcept;
+	Mouse(const Mouse&) = delete;
+	Mouse& operator=(const Mouse&) = delete;
+	std::pair<int, int> GetPos() const noexcept;
 	int GetPosX() const noexcept;
 	int GetPosY() const noexcept;
 	bool IsInWindow() const noexcept;
@@ -98,17 +98,17 @@ public:
 	}
 	void Flush() noexcept;
 private:
-	void OnMouseMove( int x,int y ) noexcept;
+	void OnMouseMove(int x, int y) noexcept;
 	void OnMouseLeave() noexcept;
 	void OnMouseEnter() noexcept;
-	void OnLeftPressed( int x,int y ) noexcept;
-	void OnLeftReleased( int x,int y ) noexcept;
-	void OnRightPressed( int x,int y ) noexcept;
-	void OnRightReleased( int x,int y ) noexcept;
-	void OnWheelUp( int x,int y ) noexcept;
-	void OnWheelDown( int x,int y ) noexcept;
+	void OnLeftPressed(int x, int y) noexcept;
+	void OnLeftReleased(int x, int y) noexcept;
+	void OnRightPressed(int x, int y) noexcept;
+	void OnRightReleased(int x, int y) noexcept;
+	void OnWheelUp(int x, int y) noexcept;
+	void OnWheelDown(int x, int y) noexcept;
 	void TrimBuffer() noexcept;
-	void OnWheelDelta( int x,int y,int delta ) noexcept;
+	void OnWheelDelta(int x, int y, int delta) noexcept;
 private:
 	static constexpr unsigned int bufferSize = 16u;
 	int x;
